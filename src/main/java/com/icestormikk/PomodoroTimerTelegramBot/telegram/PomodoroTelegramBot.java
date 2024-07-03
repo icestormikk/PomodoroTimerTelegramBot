@@ -43,6 +43,12 @@ public class PomodoroTelegramBot extends TelegramLongPollingBot {
                             :small_orange_diamond: Уведомления — Бот уведомит вас о начале и окончании каждого интервала.
                             :small_orange_diamond: Статистика — Отслеживайте свою продуктивность и анализируйте прогресс.
                                                          
+                            Доступные команды:
+                            :small_orange_diamond: /timer [продолжительность] [Название] - создать новый таймер с параметрами
+                            :small_orange_diamond: /timerstart [Название_таймера] - запустить таймер
+                            :small_orange_diamond: /timerstop [Название_таймера] - остановить таймер
+                            :small_orange_diamond: /stats - получить статистику
+                                                         
                             Присоединяйтесь к сообществу продуктивных людей и начинайте достигать своих целей уже сегодня с Pomodoro Bot! :high_brightness:
                             """
                         )
