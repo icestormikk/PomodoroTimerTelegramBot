@@ -1,5 +1,6 @@
 package com.icestormikk.PomodoroTimerTelegramBot.telegram;
 
+import com.vdurmont.emoji.EmojiParser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -23,11 +24,34 @@ public class PomodoroTelegramBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        SendMessage message = new SendMessage();
-        message.setText(update.getMessage().getText());
-        message.setChatId(update.getMessage().getChatId());
+        if (update.hasMessage()) {
+            String content = update.getMessage().getText();
+            long chatId = update.getMessage().getChatId();
 
-        sendMessage(message);
+            switch (content) {
+                case PomodoroTelegramBotCommands.START -> {
+                    SendMessage message = new SendMessage();
+
+                    message.setText(
+                        EmojiParser.parseToUnicode(
+                        """
+                            :dart: Pomodoro Bot — Ваш личный ассистент концентрации!
+                            Хотите повысить свою продуктивность и улучшить концентрацию? Pomodoro Bot поможет вам достичь максимальной эффективности с помощью метода помидора (tecnica del pomodoro)! 🍅
+                            Что умеет наш бот?
+                                
+                            :small_orange_diamond: Таймеры Pomodoro — Установите 25-минутные интервалы работы с последующими короткими и длинными перерывами.
+                            :small_orange_diamond: Уведомления — Бот уведомит вас о начале и окончании каждого интервала.
+                            :small_orange_diamond: Статистика — Отслеживайте свою продуктивность и анализируйте прогресс.
+                                                         
+                            Присоединяйтесь к сообществу продуктивных людей и начинайте достигать своих целей уже сегодня с Pomodoro Bot! :high_brightness:
+                            """
+                        )
+                    );
+                    message.setChatId(chatId);
+                    sendMessage(message);
+                }
+            }
+        }
     }
 
     private void sendMessage(SendMessage message) {
