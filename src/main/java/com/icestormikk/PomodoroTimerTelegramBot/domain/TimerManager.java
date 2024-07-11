@@ -1,5 +1,7 @@
 package com.icestormikk.PomodoroTimerTelegramBot.domain;
 
+import com.icestormikk.PomodoroTimerTelegramBot.domain.exceptions.PomodoroTimerAlreadyExists;
+import com.icestormikk.PomodoroTimerTelegramBot.domain.exceptions.PomodoroTimerNotFound;
 import com.icestormikk.PomodoroTimerTelegramBot.domain.interfaces.TimerListeners;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -17,9 +19,18 @@ public class TimerManager {
         return timers.stream().filter((t) -> t.id.equals(id)).findFirst();
     }
 
-    public static void addTimer(PomodoroTimer timer) {
+    private static Optional<PomodoroTimer> getPomodoroTimerByLabel(String label) {
+        return timers.stream().filter((t) -> t.label.equals(label)).findFirst();
+    }
+
+    public static void addTimer(PomodoroTimer timer) throws PomodoroTimerAlreadyExists {
         log.info("Adding timer with id {}", timer.id);
         synchronized (timers) {
+            Optional<PomodoroTimer> optTimer = getPomodoroTimerByLabel(timer.label);
+            if (optTimer.isPresent()) {
+                throw new PomodoroTimerAlreadyExists();
+            }
+
             timer.setListeners(
                 new TimerListeners() {
                     @Override
@@ -30,7 +41,7 @@ public class TimerManager {
                     @Override
                     public void onTimerStop(PomodoroTimer timer) {
                         log.info("The timer with id {} has successfully completed its work", timer.id);
-                        removeTimer(timer.id);
+                        removeTimer(timer.label);
                     }
                 }
             );
@@ -38,12 +49,12 @@ public class TimerManager {
         }
     }
 
-    public static void removeTimer(String timerId) {
-        log.info("Removing timer with id {}", timerId);
+    public static void removeTimer(String label) throws PomodoroTimerNotFound {
+        log.info("Removing timer with label {}", label);
 
-        Optional<PomodoroTimer> optTimer = getPomodoroTimerById(timerId);
+        Optional<PomodoroTimer> optTimer = getPomodoroTimerByLabel(label);
         if (optTimer.isEmpty()) {
-            return;
+            throw new PomodoroTimerNotFound();
         }
 
         synchronized (TimerManager.class) {
@@ -53,19 +64,19 @@ public class TimerManager {
         }
     }
 
-    public static void startTimer(String timerId) {
-        Optional<PomodoroTimer> optTimer = getPomodoroTimerById(timerId);
+    public static void startTimer(String label) throws PomodoroTimerNotFound {
+        Optional<PomodoroTimer> optTimer = getPomodoroTimerByLabel(label);
         if (optTimer.isEmpty()) {
-            return;
+            throw new PomodoroTimerNotFound();
         }
         PomodoroTimer timer = optTimer.get();
         timer.start();
     }
 
-    public static void stopTimer(String timerId) {
-        Optional<PomodoroTimer> optTimer = getPomodoroTimerById(timerId);
+    public static void stopTimer(String label) throws PomodoroTimerNotFound {
+        Optional<PomodoroTimer> optTimer = getPomodoroTimerByLabel(label);
         if (optTimer.isEmpty()) {
-            return;
+            throw new PomodoroTimerNotFound();
         }
         PomodoroTimer timer = optTimer.get();
         timer.interrupt();
