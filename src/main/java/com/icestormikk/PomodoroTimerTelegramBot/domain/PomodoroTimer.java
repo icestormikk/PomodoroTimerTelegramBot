@@ -5,6 +5,8 @@ import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.annotation.Id;
 
+import java.util.UUID;
+
 @Slf4j
 public class PomodoroTimer extends Thread {
     @Id
@@ -15,6 +17,7 @@ public class PomodoroTimer extends Thread {
     private TimerListeners listeners;
 
     public PomodoroTimer(String label, Long timeInMs) {
+        this.id = UUID.randomUUID().toString();
         this.timeInMs = timeInMs;
         this.label = label;
     }
