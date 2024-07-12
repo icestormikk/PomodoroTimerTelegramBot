@@ -1,10 +1,10 @@
 package com.icestormikk.PomodoroTimerTelegramBot.telegram;
 
 import com.icestormikk.PomodoroTimerTelegramBot.telegram.exceptions.CommandHandlerNotFound;
-import com.icestormikk.PomodoroTimerTelegramBot.telegram.handlers.CreateTimerCommandHandler;
-import com.icestormikk.PomodoroTimerTelegramBot.telegram.handlers.StartCommandHandler;
-import com.icestormikk.PomodoroTimerTelegramBot.telegram.handlers.StartTimerCommandHandler;
-import com.icestormikk.PomodoroTimerTelegramBot.telegram.handlers.StopTimerCommandHandler;
+import com.icestormikk.PomodoroTimerTelegramBot.telegram.handlers.commands.CreateTimerCommandHandler;
+import com.icestormikk.PomodoroTimerTelegramBot.telegram.handlers.commands.StartCommandHandler;
+import com.icestormikk.PomodoroTimerTelegramBot.telegram.handlers.commands.StartTimerCommandHandler;
+import com.icestormikk.PomodoroTimerTelegramBot.telegram.handlers.commands.StopTimerCommandHandler;
 import com.icestormikk.PomodoroTimerTelegramBot.telegram.interfaces.CommandHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
