@@ -1,4 +1,4 @@
-package com.icestormikk.PomodoroTimerTelegramBot.telegram.handlers;
+package com.icestormikk.PomodoroTimerTelegramBot.telegram.handlers.commands;
 
 import com.icestormikk.PomodoroTimerTelegramBot.telegram.interfaces.CommandHandler;
 import com.vdurmont.emoji.EmojiParser;
@@ -27,7 +27,7 @@ public class StartCommandHandler implements CommandHandler {
                 :small_orange_diamond: Статистика — Отслеживайте свою продуктивность и анализируйте прогресс.
                                              
                 Доступные команды:
-                :small_orange_diamond: /timer [Название] [продолжительность] - создать новый таймер с параметрами
+                :small_orange_diamond: /timer - создать новый таймер с параметрами
                 :small_orange_diamond: /timerstart [Название_таймера] - запустить таймер
                 :small_orange_diamond: /timerstop [Название_таймера] - остановить таймер
                 :small_orange_diamond: /stats - получить статистику
