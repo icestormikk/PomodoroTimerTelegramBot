@@ -35,7 +35,7 @@ public class TimerManager {
                 new TimerListeners() {
                     @Override
                     public void onTimerStart(PomodoroTimer timer) {
-                        log.info("Timer with id {} has been started for {}ms", timer.id, timer.timeInMs);
+                        log.info("Timer with id {} has been started", timer.id);
                     }
 
                     @Override
