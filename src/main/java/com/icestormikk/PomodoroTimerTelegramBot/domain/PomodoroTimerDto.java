@@ -5,5 +5,5 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class PomodoroTimerDto {
     public String label;
-    public Long timeInMs;
+    public String description;
 }
