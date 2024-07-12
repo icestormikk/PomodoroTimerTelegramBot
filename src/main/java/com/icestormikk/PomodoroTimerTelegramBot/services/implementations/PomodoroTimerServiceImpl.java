@@ -45,7 +45,7 @@ public class PomodoroTimerServiceImpl implements PomodoroTimerService {
     public PomodoroTimer createTimer(PomodoroTimerDto pomodoroTimerDto) {
         log.info("Получен запрос на добавление объекта класса PomodoroTimer");
 
-        PomodoroTimer timer = new PomodoroTimer(pomodoroTimerDto.label, pomodoroTimerDto.timeInMs);
+        PomodoroTimer timer = new PomodoroTimer(pomodoroTimerDto.label, pomodoroTimerDto.description);
         try {
             PomodoroTimer result = pomodoroTimerRepository.save(timer);
             log.info("Объект класса PomodoroTimer успешно сохранён");
@@ -66,7 +66,10 @@ public class PomodoroTimerServiceImpl implements PomodoroTimerService {
             throw new PomodoroTimerNotFound();
         }
 
-        PomodoroTimer updatedTimer = new PomodoroTimer(id, pomodoroTimerDto.label, pomodoroTimerDto.timeInMs);
+        PomodoroTimer updatedTimer = timer.get();
+        updatedTimer.label = pomodoroTimerDto.label;
+        updatedTimer.description = pomodoroTimerDto.description;
+
         try {
             PomodoroTimer result = pomodoroTimerRepository.save(updatedTimer);
             log.info("Обновление объекта класса PomodoroTimer c id {} прошло успешно", id);
