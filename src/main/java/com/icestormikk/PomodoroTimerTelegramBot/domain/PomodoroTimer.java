@@ -1,38 +1,29 @@
 package com.icestormikk.PomodoroTimerTelegramBot.domain;
 
+import com.icestormikk.PomodoroTimerTelegramBot.domain.abstraction.Timer;
 import com.icestormikk.PomodoroTimerTelegramBot.domain.interfaces.TimerListeners;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.annotation.Id;
 
 import java.util.UUID;
 
+@Setter
 @Slf4j
-public class PomodoroTimer extends Thread {
-    @Id
-    public String id;
-    public String label;
-    public Long timeInMs;
-    @Setter
+public class PomodoroTimer extends Timer {
     private TimerListeners listeners;
 
-    public PomodoroTimer(String label, Long timeInMs) {
+    public PomodoroTimer(String label, String description) {
         this.id = UUID.randomUUID().toString();
-        this.timeInMs = timeInMs;
         this.label = label;
-    }
-
-    public PomodoroTimer(String id, String label, Long timeInMs) {
-        this.id = id;
-        this.label = label;
-        this.timeInMs = timeInMs;
+        this.description = description;
+        this.durationInMs = 1000L * 60 * 25; // 25 minutes (1000ms * 60sec * 25min)
     }
 
     @Override
     public void run() {
         listeners.onTimerStart(this);
         try {
-            Thread.sleep(timeInMs);
+            Thread.sleep(this.durationInMs);
         } catch (InterruptedException e) {
             log.error("An error occurred while the timer was running with id {}: {}", this.id, e.getMessage());
         }
