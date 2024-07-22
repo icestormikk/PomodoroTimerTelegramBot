@@ -1,9 +1,7 @@
 package com.icestormikk.PomodoroTimerTelegramBot.telegram.handlers.commands;
 
-import com.icestormikk.PomodoroTimerTelegramBot.domain.PomodoroTimerDto;
-import com.icestormikk.PomodoroTimerTelegramBot.telegram.PomodoroTelegramBot;
-import com.icestormikk.PomodoroTimerTelegramBot.telegram.PomodoroTimerState;
-import com.icestormikk.PomodoroTimerTelegramBot.telegram.PomodoroTimerUserSession;
+import com.icestormikk.PomodoroTimerTelegramBot.telegram.classes.PomodoroTelegramBotUserSessionManager;
+import com.icestormikk.PomodoroTimerTelegramBot.telegram.exceptions.InvalidUserSessionException;
 import com.icestormikk.PomodoroTimerTelegramBot.telegram.interfaces.CommandHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -19,13 +17,15 @@ public class CreateTimerCommandHandler implements CommandHandler {
         log.info("The process of creating a PomodoroTimer begins. Requesting information about the name of the timer.");
         SendMessage message = new SendMessage();
         message.setChatId(chatId);
-        message.setText("Введите желаемое название таймера");
 
-        PomodoroTimerUserSession userSession = new PomodoroTimerUserSession(
-            new PomodoroTimerDto(null, null),
-            PomodoroTimerState.FETCHING_TASK_LABEL
-        );
-        PomodoroTelegramBot.userSessions.put(chatId, userSession);
+        try {
+            PomodoroTelegramBotUserSessionManager.addUserSession(chatId, null, null);
+            message.setText("Введите желаемое название таймера");
+        } catch (InvalidUserSessionException e) {
+            log.error(e.getMessage());
+            message.setText("Произошла непредвиденная ошибка. Пожалуйста повторите запрос. Если ошибка не " +
+                    "исчезнет, обратитесь к администратору");
+        }
 
         return message;
     }
