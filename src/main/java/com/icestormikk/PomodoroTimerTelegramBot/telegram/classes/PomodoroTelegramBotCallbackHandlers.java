@@ -1,4 +1,4 @@
-package com.icestormikk.PomodoroTimerTelegramBot.telegram;
+package com.icestormikk.PomodoroTimerTelegramBot.telegram.classes;
 
 import com.icestormikk.PomodoroTimerTelegramBot.telegram.exceptions.CallbackHandlerNotFound;
 import com.icestormikk.PomodoroTimerTelegramBot.telegram.exceptions.InvalidUserSessionException;
@@ -14,8 +14,8 @@ import java.util.Map;
 @Slf4j
 public class PomodoroTelegramBotCallbackHandlers {
     private static final Map<PomodoroTimerState, CallbackHandler> handlers = Map.of(
-        PomodoroTimerState.FETCHING_TASK_LABEL, new PomodoroTimerLabelCallbackHandler(),
-        PomodoroTimerState.FETCHING_TASK_DESCRIPTION, new PomodoroTimerDescriptionCallbackHandler()
+        PomodoroTimerState.CREATE_TIMER_FETCHING_TASK_LABEL, new PomodoroTimerLabelCallbackHandler(),
+        PomodoroTimerState.CREATE_TIMER_FETCHING_TASK_DESCRIPTION, new PomodoroTimerDescriptionCallbackHandler()
     );
 
     public static BotApiMethod<?> handleCallback(Update update, PomodoroTimerUserSession session) throws CallbackHandlerNotFound {

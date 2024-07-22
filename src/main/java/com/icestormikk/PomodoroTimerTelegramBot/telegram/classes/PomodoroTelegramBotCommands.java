@@ -1,4 +1,4 @@
-package com.icestormikk.PomodoroTimerTelegramBot.telegram;
+package com.icestormikk.PomodoroTimerTelegramBot.telegram.classes;
 
 public class PomodoroTelegramBotCommands {
     public static final String START = "/start";

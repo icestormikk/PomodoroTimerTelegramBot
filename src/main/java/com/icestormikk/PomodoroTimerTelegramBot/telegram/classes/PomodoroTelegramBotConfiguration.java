@@ -1,4 +1,4 @@
-package com.icestormikk.PomodoroTimerTelegramBot.telegram;
+package com.icestormikk.PomodoroTimerTelegramBot.telegram.classes;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

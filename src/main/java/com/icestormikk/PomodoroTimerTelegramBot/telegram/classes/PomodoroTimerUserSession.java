@@ -1,4 +1,4 @@
-package com.icestormikk.PomodoroTimerTelegramBot.telegram;
+package com.icestormikk.PomodoroTimerTelegramBot.telegram.classes;
 
 import com.icestormikk.PomodoroTimerTelegramBot.domain.PomodoroTimerDto;
 import com.icestormikk.PomodoroTimerTelegramBot.telegram.abstraction.UserSession;

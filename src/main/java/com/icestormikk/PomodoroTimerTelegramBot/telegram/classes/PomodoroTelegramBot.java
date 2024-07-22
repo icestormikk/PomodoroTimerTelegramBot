@@ -1,7 +1,8 @@
-package com.icestormikk.PomodoroTimerTelegramBot.telegram;
+package com.icestormikk.PomodoroTimerTelegramBot.telegram.classes;
 
 import com.icestormikk.PomodoroTimerTelegramBot.telegram.exceptions.CallbackHandlerNotFound;
 import com.icestormikk.PomodoroTimerTelegramBot.telegram.exceptions.CommandHandlerNotFound;
+import com.icestormikk.PomodoroTimerTelegramBot.telegram.exceptions.InvalidUserSessionException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -12,11 +13,11 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.HashMap;
+import java.util.Optional;
 
 @Slf4j
 @Component
 public class PomodoroTelegramBot extends TelegramLongPollingBot {
-    public static final HashMap<Long, PomodoroTimerUserSession> userSessions = new HashMap<>();
     public final String botName;
 
     public PomodoroTelegramBot(
@@ -34,14 +35,16 @@ public class PomodoroTelegramBot extends TelegramLongPollingBot {
 
             try {
                 long chatId = update.getMessage().getChatId();
-                PomodoroTimerUserSession session = userSessions.get(chatId);
+                Optional<PomodoroTimerUserSession> session = PomodoroTelegramBotUserSessionManager
+                        .getUserSessionByChatId(chatId);
 
-                if (session != null && session.state != PomodoroTimerState.NONE) {
-                    response = PomodoroTelegramBotCallbackHandlers.handleCallback(update, session);
+                if (session.isPresent() && session.get().state != PomodoroTimerState.NONE) {
+                    response = PomodoroTelegramBotCallbackHandlers.handleCallback(update, session.get());
                 } else {
                     response = PomodoroTelegramBotCommandHandlers.handleCommand(update);
                 }
             } catch (CommandHandlerNotFound | CallbackHandlerNotFound e) {
+                log.error(e.getMessage());
                 response = new SendMessage(
                     Long.toString(update.getMessage().getChatId()),
                     "Извините, мне не удалось понять, что вы имели в виду.."
