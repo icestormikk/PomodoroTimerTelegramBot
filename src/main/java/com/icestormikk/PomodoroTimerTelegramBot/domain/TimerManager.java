@@ -9,11 +9,13 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @Slf4j
 @Component
 public class TimerManager {
     private static final List<PomodoroTimer> timers = new ArrayList<>();
+    private static final int DEFAULT_PAGE_SIZE = 10;
 
     private static Optional<PomodoroTimer> getPomodoroTimerById(String id) {
         return timers.stream().filter((t) -> t.id.equals(id)).findFirst();
@@ -21,6 +23,14 @@ public class TimerManager {
 
     private static Optional<PomodoroTimer> getPomodoroTimerByLabel(String label) {
         return timers.stream().filter((t) -> t.label.equals(label)).findFirst();
+    }
+
+    public static Stream<PomodoroTimer> getAllPomodoroTimers() {
+        return timers.parallelStream();
+    }
+
+    public static Stream<PomodoroTimer> getPomodoroTimersByPage(int pageIndex) {
+        return timers.subList(pageIndex * DEFAULT_PAGE_SIZE, (pageIndex + 1) * DEFAULT_PAGE_SIZE).parallelStream();
     }
 
     public static void addTimer(PomodoroTimer timer) throws PomodoroTimerAlreadyExists {
