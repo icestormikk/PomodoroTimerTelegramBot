@@ -33,6 +33,8 @@ public class PomodoroTimerLabelCallbackHandler implements CallbackHandler {
         session.pomodoroTimerDto.label = label;
         session.state = PomodoroTimerState.CREATE_TIMER_FETCHING_TASK_DESCRIPTION;
 
+        PomodoroTelegramBotUserSessionManager.updateUserSession(chatId, session);
+
         SendMessage message = new SendMessage();
         message.setChatId(chatId);
         message.setText("Введите описание для нового таймера");

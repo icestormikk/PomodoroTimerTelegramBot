@@ -35,7 +35,6 @@ public class PomodoroTimerDescriptionCallbackHandler implements CallbackHandler 
 
         session.pomodoroTimerDto.description = description;
         try {
-
             TimerManager.addTimer(new PomodoroTimer(session.pomodoroTimerDto.label, session.pomodoroTimerDto.description));
             PomodoroTelegramBotUserSessionManager.deleteUserSession(chatId);
 
